@@ -2,7 +2,7 @@
 
 My personal developer portfolio — showcasing who I am, my skills, and the projects I've built as I develop my full-stack engineering skills.
 
-🔗 **Live site:** [Add your GitHub Pages URL here once deployed]
+🔗 **Live site:** [https://etinosa15.github.io/Jae.dev/]
 
 ## About
 
