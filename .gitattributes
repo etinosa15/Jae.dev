@@ -1,0 +1,20 @@
+# Normalise line endings so the repo has one answer regardless of who clones it.
+#
+# eol=lf rather than the default "native" is the deliberate part. The index
+# already stores LF for every text file here, but core.autocrlf=true rewrites
+# them to CRLF on checkout, so git warns on every add that it is about to
+# change bytes it just read. Pinning the working tree to LF removes the
+# conversion entirely instead of hiding the warning.
+#
+# Nothing in this project cares: it is served as static files, and every
+# browser, Netlify and the python http.server all read LF fine.
+* text=auto eol=lf
+
+# Never run EOL conversion on these — it corrupts the bytes.
+*.png binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.woff binary
+*.woff2 binary

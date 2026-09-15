@@ -2,7 +2,7 @@
 
 My personal developer portfolio — showcasing who I am, my skills, and the projects I've built as I develop my full-stack engineering skills.
 
-🔗 **Live site:** [https://etinosa15.github.io/Jae.dev/]
+🔗 **Live site:** [jae-dev-portfolio.netlify.app](https://jae-dev-portfolio.netlify.app/)
 
 ## About
 

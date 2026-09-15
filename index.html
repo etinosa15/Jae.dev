@@ -3,18 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="shortcut icon"
-      href="Static/img/portf-1ico.png"
-      type="image/x-icon"
-    />
+    <!-- -v2: netlify.toml serves /Static/* with max-age=31536000, immutable, so
+         a same-filename replacement would leave returning visitors on the old
+         631 KB file for a year. The filename IS the cache key here. -->
+    <link rel="icon" href="Static/img/portf-1ico-v2.png" type="image/png" />
+    <link rel="apple-touch-icon" href="Static/img/portf-1ico-v2.png" />
     <link rel="stylesheet" href="style.css" />
-    <title>Jae.Dev | Full-Stack Developer Portfolio</title>
+    <title>Jae.dev | Full-Stack Developer Portfolio</title>
 
     <meta
       name="description"
       content="Portfolio of Etinosa Akenbor Jesse (Jae), a full-stack developer based in Benin City, Nigeria, specializing in responsive frontends and C#/.NET backend systems."
     />
+
+    <link rel="canonical" href="https://jae-dev-portfolio.netlify.app/" />
+
+    <meta name="author" content="Etinosa Akenbor Jesse" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="theme-color" content="#1a1a1a" />
+
+    <meta name="geo.region" content="NG-ED" />
+    <meta name="geo.placename" content="Benin City" />
+    <meta name="geo.position" content="6.3350;5.6037" />
+    <meta name="ICBM" content="6.3350, 5.6037" />
 
     <meta property="og:title" content="Jae.dev — Full-Stack Developer" />
     <meta
@@ -23,10 +37,18 @@
     />
     <meta
       property="og:image"
-      content="https://etinosa15.github.io/Jae.dev/Static/img/portf-1ico.png"
+      content="https://jae-dev-portfolio.netlify.app/Static/img/portf-1ico-v2.png"
     />
-    <meta property="og:url" content="https://etinosa15.github.io/Jae.dev/" />
+    <meta property="og:url" content="https://jae-dev-portfolio.netlify.app/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Jae.dev" />
+    <meta property="og:locale" content="en_NG" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta
+      property="og:image:alt"
+      content="Jae.dev — portfolio of Etinosa Akenbor Jesse, full-stack developer"
+    />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Jae.dev — Full-Stack Developer" />
@@ -34,19 +56,57 @@
       name="twitter:description"
       content="Full-stack developer portfolio — HTML, CSS, JavaScript, and C#/.NET projects."
     />
+    <meta
+      name="twitter:image"
+      content="https://jae-dev-portfolio.netlify.app/Static/img/portf-1ico-v2.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Jae.dev — portfolio of Etinosa Akenbor Jesse, full-stack developer"
+    />
+
+    <link rel="preconnect" href="https://api.web3forms.com" crossorigin />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
+        "@id": "https://jae-dev-portfolio.netlify.app/#person",
         "name": "Etinosa Akenbor Jesse",
         "alternateName": "Jae",
         "jobTitle": "Full-Stack Developer",
-        "url": "https://etinosa15.github.io/Jae.dev/",
+        "description": "Full-stack developer based in Benin City, Nigeria, building responsive frontends with HTML, CSS and JavaScript and backend systems with C#, .NET and ASP.NET Core.",
+        "url": "https://jae-dev-portfolio.netlify.app/",
+        "image": "https://jae-dev-portfolio.netlify.app/Static/img/portf-1ico-v2.png",
         "email": "mailto:etinosaakenbor84@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Benin City",
+          "addressRegion": "Edo",
+          "addressCountry": "NG"
+        },
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Full-Stack Developer",
+          "occupationLocation": {
+            "@type": "City",
+            "name": "Benin City",
+            "containedInPlace": {
+              "@type": "Country",
+              "name": "Nigeria"
+            }
+          },
+          "skills": "HTML5, CSS3, JavaScript, C#, .NET, ASP.NET Core, SQL, Git"
+        },
+        "knowsLanguage": {
+          "@type": "Language",
+          "name": "English",
+          "alternateName": "en"
+        },
         "sameAs": [
           "https://github.com/etinosa15",
-          "https://x.com/etinosa78694"
+          "https://x.com/etinosa78694",
+          "https://wa.me/2349139686316"
         ],
         "knowsAbout": [
           "HTML5",
@@ -55,34 +115,165 @@
           "C#",
           ".NET",
           "ASP.NET Core",
-          "SQL"
+          "SQL",
+          "Responsive Web Design",
+          "Front-End Development",
+          "Back-End Development",
+          "Git"
         ]
       }
     </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://jae-dev-portfolio.netlify.app/#website",
+            "url": "https://jae-dev-portfolio.netlify.app/",
+            "name": "Jae.dev",
+            "description": "Portfolio of Etinosa Akenbor Jesse (Jae), a full-stack developer based in Benin City, Nigeria.",
+            "inLanguage": "en",
+            "publisher": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://jae-dev-portfolio.netlify.app/#webpage",
+            "url": "https://jae-dev-portfolio.netlify.app/",
+            "name": "Jae.dev | Full-Stack Developer Portfolio",
+            "isPartOf": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#website"
+            },
+            "about": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            },
+            "mainEntity": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "CreativeWork",
+            "@id": "https://jae-dev-portfolio.netlify.app/#apex-market",
+            "name": "Apex Market",
+            "url": "https://apex-market-online.netlify.app",
+            "description": "Modern online marketplace platform built with HTML, CSS and JavaScript — focused on performance and intuitive UX.",
+            "keywords": "HTML, CSS, JavaScript, marketplace, e-commerce, responsive design",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            },
+            "creator": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            }
+          },
+          {
+            "@type": "CreativeWork",
+            "@id": "https://jae-dev-portfolio.netlify.app/#interiors-by-uyi",
+            "name": "Interiors by Uyi",
+            "url": "https://interiors-by-uyi.netlify.app",
+            "description": "A single-page website built for a Benin City furniture brand — showcasing their collections and routing enquiries straight to WhatsApp instead of a checkout flow.",
+            "keywords": "HTML, CSS, JavaScript, single-page website, furniture, WhatsApp enquiries",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            },
+            "creator": {
+              "@id": "https://jae-dev-portfolio.netlify.app/#person"
+            }
+          }
+        ]
+      }
+    </script>
+
+    <noscript>
+      <style>
+        .page {
+          display: block !important;
+          animation: none !important;
+        }
+        .nav-toggle {
+          display: none !important;
+        }
+        /* Below 720px the links live in a dropdown that only opens via the
+           hamburger's JS. With the toggle gone they'd be permanently hidden,
+           so drop them back into normal flow under the pill: static instead of
+           absolute, visible, and no longer transformed out of view.
+           The sections are all stacked here anyway, so these are plain
+           same-page anchors and work with no script at all. */
+        .nav-links {
+          position: static !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          transform: none !important;
+          pointer-events: auto !important;
+          flex-direction: row !important;
+          flex-wrap: wrap !important;
+          gap: 0.75rem 1.25rem !important;
+          background: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          padding: 0 !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
-    <!-- ===== HEADER / NAV ===== -->
+    <div id="scroll-sentinel" aria-hidden="true"></div>
+
     <header>
-      <div class="container">
-        <nav>
+      <div class="nav-shell">
+        <div class="header-blur" aria-hidden="true"></div>
+        <div class="header-grain" aria-hidden="true"></div>
+        <nav aria-label="Main">
           <div class="nav-logo-wrapper">
-            <img src="Static/img/portf-1ico.png" alt="Logo" class="nav-logo" />
+            <img
+              src="Static/img/portf-1ico-v2.png"
+              alt=""
+              width="48"
+              height="48"
+              class="nav-logo"
+            />
           </div>
           <span class="nav-brand">Jae<span>.</span>dev</span>
-          <a class="nav-link active" data-page="home" aria-current="page"
-            >HomePage</a
+
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-label="Menu"
+            aria-expanded="false"
+            aria-controls="nav-links"
           >
-          <a class="nav-link" data-page="about">About Me</a>
-          <a class="nav-link" data-page="contact">Contact Me</a>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+
+          <div class="nav-links" id="nav-links">
+            <a
+              class="nav-link active"
+              data-page="home"
+              href="#home"
+              aria-current="page"
+              >HomePage</a
+            >
+            <a class="nav-link" data-page="about" href="#about">About Me</a>
+            <a class="nav-link" data-page="contact" href="#contact"
+              >Contact Me</a
+            >
+          </div>
         </nav>
       </div>
     </header>
 
-    <!-- ===== MAIN ===== -->
     <main class="container">
-      <!-- ----- HOME ----- -->
-      <section id="home" class="page active" role="tabpanel">
-        <h1>Full-Stack Developer</h1>
+      <section id="home" class="page active" aria-labelledby="home-title">
+        <h1 id="home-title">Full-Stack Developer</h1>
         <p style="font-size: 1.15rem; margin-bottom: 2rem">
           Full-Stack Developer specializing in responsive frontends (HTML, CSS,
           JavaScript) and C# backend systems.
@@ -90,13 +281,12 @@
 
         <h2>My Projects:</h2>
         <div class="project-grid">
-          <!-- Featured: Apex Market -->
           <article class="card">
-            <span class="project-title">Apex Market</span>
+            <h3 class="project-title">Apex Market</h3>
             <span class="project-sub">Featured</span>
             <p>
               Modern online marketplace platform built with HTML, CSS &
-              JavaScript — focused on performance and intuitive UX..
+              JavaScript — focused on performance and intuitive UX.
             </p>
             <a
               class="btn"
@@ -107,12 +297,11 @@
             >
           </article>
 
-          <!-- Interiors by Uyi -->
           <article class="card">
-            <span class="project-title">Interiors by Uyi</span>
+            <h3 class="project-title">Interiors by Uyi</h3>
             <span class="project-sub">Featured</span>
             <p>
-              A single-page website that i built for a furniture brand -
+              A single-page website that I built for a furniture brand —
               showcasing their collections and routing enquiries straight to
               WhatsApp instead of a checkout flow.
             </p>
@@ -125,51 +314,34 @@
             >
           </article>
 
-          <!-- Coming Soon 1 -->
           <article class="card">
             <span class="coming-badge">Launching soon</span>
-            <span class="project-title">Portfolio Builder</span>
+            <h3 class="project-title">Portfolio Builder</h3>
             <p>
               A minimal, developer-first tool for building and customizing
               portfolio sites — no bloat, just clean code and full control.
             </p>
-            <span
-              class="btn"
-              style="
-                opacity: 0.5;
-                pointer-events: none;
-                border-color: var(--border);
-                color: var(--text-muted);
-              "
+            <span class="btn btn-disabled" aria-disabled="true"
               >Coming soon</span
             >
           </article>
 
-          <!-- Coming Soon 2 -->
           <article class="card">
             <span class="coming-badge">Launching soon</span>
-            <span class="project-title">Dev Dashboard</span>
+            <h3 class="project-title">Dev Dashboard</h3>
             <p>
               A concept for a clean, no-nonsense dashboard giving engineering
               teams real-time visibility into metrics and logs.
             </p>
-            <span
-              class="btn"
-              style="
-                opacity: 0.5;
-                pointer-events: none;
-                border-color: var(--border);
-                color: var(--text-muted);
-              "
+            <span class="btn btn-disabled" aria-disabled="true"
               >Coming soon</span
             >
           </article>
         </div>
       </section>
 
-      <!-- ----- ABOUT ----- -->
-      <section id="about" class="page" role="tabpanel">
-        <h2>About Me</h2>
+      <section id="about" class="page" aria-labelledby="about-title">
+        <h2 id="about-title">About Me</h2>
         <p style="font-size: 1.05rem">
           My name is Etinosa Akenbor Jesse — most people know me as Jae. I'm a
           full-stack developer with over 2 years of experience. I am currently
@@ -227,8 +399,8 @@
               <span class="exp-title">Apex Market</span>
               <span class="exp-date">Side project</span>
               <p style="margin-top: 0.3rem; font-size: 0.95rem">
-                One of my projects done in my free time. It is an Online
-                Marketplace Built with vanilla html and css
+                One of my projects done in my free time. It is an online
+                marketplace built with vanilla HTML and CSS.
               </p>
             </div>
             <div class="exp-item">
@@ -244,9 +416,8 @@
         </div>
       </section>
 
-      <!-- ----- CONTACT ----- -->
-      <section id="contact" class="page" role="tabpanel">
-        <h2>Contact Me</h2>
+      <section id="contact" class="page" aria-labelledby="contact-title">
+        <h2 id="contact-title">Contact Me</h2>
         <p style="font-size: 1.05rem">
           I'm always open to interesting conversations, project collaboration,
           or just a friendly hello.
@@ -259,7 +430,6 @@
         </div>
 
         <div class="contact-links">
-          <!-- GitHub -->
           <a
             href="https://github.com/etinosa15"
             target="_blank"
@@ -282,7 +452,6 @@
             </svg>
             GitHub
           </a>
-          <!-- WhatsApp -->
           <a
             href="https://wa.me/2349139686316"
             target="_blank"
@@ -305,7 +474,6 @@
             </svg>
             WhatsApp
           </a>
-          <!-- Twitter / X -->
           <a
             href="https://x.com/etinosa78694"
             target="_blank"
@@ -339,14 +507,44 @@
               value="5d0929be-5a1d-4c53-a160-ab8c7310b1d6"
             />
 
+            <!-- Honeypot. Web3Forms discards any submission where "botcheck"
+                 arrives checked, and naive bots check every box they can parse.
+                 display:none is doing real work here, not just hiding it: it
+                 takes the field out of the tab order AND out of the
+                 accessibility tree, so no keyboard or screen-reader user can
+                 reach it and silently get their message thrown away.
+                 Unchecked checkboxes are omitted from FormData entirely, so a
+                 human's submission sends no botcheck key at all — which is
+                 exactly what Web3Forms reads as human. -->
+            <input
+              type="checkbox"
+              name="botcheck"
+              style="display: none"
+              tabindex="-1"
+              aria-hidden="true"
+            />
+
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" id="name" name="name" required />
+              <input
+                type="text"
+                id="name"
+                name="name"
+                autocomplete="name"
+                required
+              />
             </div>
 
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" required />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                inputmode="email"
+                required
+              />
             </div>
 
             <div class="form-group">
@@ -360,14 +558,17 @@
             </div>
 
             <button type="submit" class="form-submit">Send Message</button>
-            <p id="form-status"></p>
+            <!-- role="status" makes this a polite live region, so "Sending..."
+                 and the result are announced to a screen reader instead of
+                 changing silently. It must carry the role in the markup, before
+                 any text lands in it — adding the role at the same moment as
+                 the text is too late for most assistive tech to notice. -->
+            <p id="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
-        <!-- Form End -->
       </section>
     </main>
 
-    <!-- ===== FOOTER ===== -->
     <footer>
       <div class="container">
         <p style="margin: 0; max-width: 100%">&copy; 2026 Jae.dev</p>

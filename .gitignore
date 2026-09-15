@@ -5,3 +5,6 @@ Thumbs.db
 # Editor files
 .vscode/
 *.log
+
+# Local Claude Code config (launch.json points at a dev server on your machine)
+.claude/

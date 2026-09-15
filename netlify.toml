@@ -1,0 +1,83 @@
+[build]
+  publish = "."
+  # `command` is deliberately absent rather than set to "". Omitting the key is
+  # how you declare "no build step"; an empty string is a command that Netlify
+  # still enters the build stage to run, which shows up as a confusing no-op
+  # step in the deploy log.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+    # ----- Content-Security-Policy -----
+    # ACTIVE. This cannot be tested against the local python http.server, which
+    # sends no custom headers at all — the first real proof is a deploy preview.
+    #
+    # Every directive is matched to what this site actually loads. Verified by
+    # walking the markup rather than by assumption:
+    #   script-src 'self'   -> the ONLY executable script is <script src="script.js">.
+    #                          There are zero inline event handlers (onclick= etc.)
+    #                          and zero javascript: URLs, which is what makes it
+    #                          safe to omit 'unsafe-inline' here. Adding an inline
+    #                          handler later WILL break silently — put it in
+    #                          script.js instead.
+    #                          The two JSON-LD blocks need no allowance:
+    #                          type="application/ld+json" is a data block, never
+    #                          executed, so script-src does not apply to it.
+    #   style-src 'unsafe-inline' -> 12 inline style="" attributes across
+    #                          index.html and 404.html, plus the <noscript><style>
+    #                          block. Removing those would let this tighten.
+    #   img-src data:       -> the feTurbulence grain data-URI in style.css
+    #                          (.header-grain).
+    #   connect-src         -> script.js fetches https://api.web3forms.com/submit.
+    #   form-action         -> the form has no action attribute, so a native
+    #                          submit would post to 'self'; the API host is listed
+    #                          because that is where the JS sends it.
+    #   font-src 'self'     -> no @font-face and no external fonts; the headings
+    #                          use Georgia, a system font.
+    #   frame-ancestors 'none' -> the CSP-era equivalent of the X-Frame-Options
+    #                          above, and the one modern browsers actually honour.
+    #
+    # Outbound <a> links (github.com, wa.me, x.com, the two project sites) need no
+    # directive: CSP does not restrict link navigation.
+    #
+    # If something breaks, DevTools > Console names the exact directive that
+    # refused the load. Comment this one line out to roll back — everything else
+    # in this file keeps working.
+    Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+
+# ----- Caching -----
+# HTML, CSS and JS are deliberately left on Netlify's default
+# (must-revalidate + ETag). style.css and script.js have no content hash in
+# their filenames, so a long max-age here would strand visitors on a stale
+# stylesheet until it expired — exactly the cache problem that already cost
+# time during this build.
+#
+# A year-long `immutable` promise is unwithdrawable: once a browser has cached
+# a response under it, nothing you deploy can reach that visitor until it
+# expires. So it is opt-in PER FILE here, not per directory.
+#
+# The earlier version of this rule was `for = "/Static/*"`, which promised
+# immutability for every file in that folder — including ones that don't exist
+# yet. Any unversioned image added later would silently inherit a year-long
+# cache and be unfixable for a year after the first edit.
+#
+# Exact paths instead. Anything new in /Static/ gets Netlify's safe default
+# (must-revalidate + ETag) until someone deliberately lists it below, and the
+# list doubles as the record of which filenames are version-locked.
+#
+# To replace this image: save it as portf-1ico-v3.png, update the path here and
+# the references in index.html and 404.html. Overwriting v2 in place is the one
+# thing that doesn't work — the filename IS the cache key. Because the header
+# rule names the file explicitly, a rename can't be half-done: a stale path
+# here means no long cache rather than a stranded visitor, which is the safe
+# direction to fail in.
+[[headers]]
+  for = "/Static/img/portf-1ico-v2.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
