@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Deliberately ONE entry.
+
+  Home / About / Contact are hash routes (#home, #about, #contact) served by the
+  same document. Sitemap <loc> values must be full, fetchable URLs, and the
+  sitemap protocol ignores fragments — so listing #about here would either be
+  dropped or read as a duplicate of the root. One URL is the correct answer for
+  a single-page site.
+
+  If this ever becomes multi-page (real /about.html etc.), add one <url> block
+  per page and keep <loc> byte-identical to that page's rel="canonical".
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://jae-dev-portfolio.netlify.app/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>404 — Page not found | Jae.dev</title>
+    <meta
+      name="description"
+      content="That page doesn't exist on jae-dev-portfolio.netlify.app. Head back to the portfolio."
+    />
+
+    <!-- A 404 must never be indexed. The HTTP 404 status Netlify sends is the
+         primary signal; this is belt-and-braces for crawlers that reached the
+         page some other way, and for AI answer engines that are less careful
+         about status codes than Googlebot is. -->
+    <meta name="robots" content="noindex, follow" />
+
+    <!-- Root-absolute, not relative. Netlify serves this file for ANY unmatched
+         path while leaving the URL where the visitor typed it, so on
+         /some/deep/path a relative "style.css" would resolve to
+         /some/deep/style.css and 404 as well — an unstyled error page. -->
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="/Static/img/portf-1ico-v2.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/Static/img/portf-1ico-v2.png" />
+
+    <style>
+      .nf-main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+      .nf-code {
+        font-family: var(--font-heading);
+        font-size: clamp(4rem, 16vw, 9rem);
+        line-height: 1;
+        color: var(--accent-amber);
+        margin-bottom: 0.5rem;
+      }
+      .nf-title {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 1rem;
+      }
+      .nf-text {
+        color: var(--text-muted);
+        max-width: 46ch;
+        margin-bottom: 2rem;
+      }
+      .nf-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      /* Matches .card .btn exactly — that rule is scoped to .card, so it can't
+         be reused directly from outside one. */
+      .nf-btn {
+        display: inline-block;
+        background: transparent;
+        color: var(--accent-amber);
+        border: 1px solid var(--accent-amber);
+        border-radius: var(--radius-btn);
+        padding: 0.4rem 1.2rem;
+        font-size: 0.9rem;
+        font-family: var(--font-body);
+        transition: all var(--transition);
+        cursor: pointer;
+      }
+      .nf-btn:hover {
+        background: var(--accent-amber);
+        color: var(--bg);
+      }
+      .nf-btn.secondary {
+        color: var(--text-primary);
+        border-color: var(--border);
+      }
+      .nf-btn.secondary:hover {
+        background: transparent;
+        color: var(--accent-amber);
+        border-color: var(--accent-amber);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Deliberately no nav links and no hamburger. Below 720px those links are
+         a dropdown that only opens via script.js, and this page loads no JS —
+         they'd be permanently unreachable on a phone. The three buttons below
+         are the navigation instead, and they work at every width. -->
+    <header>
+      <div class="nav-shell">
+        <div class="header-blur" aria-hidden="true"></div>
+        <div class="header-grain" aria-hidden="true"></div>
+        <nav aria-label="Main">
+          <div class="nav-logo-wrapper">
+            <img
+              src="/Static/img/portf-1ico-v2.png"
+              alt=""
+              width="30"
+              height="30"
+              class="nav-logo"
+            />
+          </div>
+          <a href="/" class="nav-brand" style="color: var(--text-primary)"
+            >Jae<span>.</span>dev</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main class="nf-main">
+      <div class="container">
+        <p class="nf-code" aria-hidden="true">404</p>
+        <!-- h1, not the decorative "404" above it: the number is the label, the
+             sentence is the actual heading of the page. aria-hidden on the
+             number stops a screen reader announcing a bare "404" first. -->
+        <h1 class="nf-title">This page doesn't exist</h1>
+        <p class="nf-text">
+          The link may be out of date, or the address mistyped. Everything on
+          this site lives on one page — try one of these.
+        </p>
+        <div class="nf-actions">
+          <a href="/" class="nf-btn">Go to homepage</a>
+          <a href="/#about" class="nf-btn secondary">About me</a>
+          <a href="/#contact" class="nf-btn secondary">Get in touch</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p style="margin: 0; max-width: 100%">&copy; 2026 Jae.dev</p>
+      </div>
+    </footer>
+  </body>
+</html>

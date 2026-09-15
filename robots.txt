@@ -1,0 +1,40 @@
+User-agent: *
+Allow: /
+
+# ----- AI / answer engines (AEO) -----
+# "Allow: /" above already covers these, so listing them changes no behaviour
+# today. They're spelled out on purpose: this is the one file where you decide
+# whether AI tools may read and cite you, and having each agent named means
+# opting one out later is a one-word edit instead of research.
+#
+# Being crawlable by these is the point of the structured data in index.html —
+# an answer engine can only cite a page it is permitted to fetch.
+
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+# Google — Gemini / AI Overviews grounding.
+# Note this is NOT a crawler: Googlebot does the fetching, and this token only
+# controls whether the content may be used for AI answers. Disallowing it does
+# not affect normal Search ranking.
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: meta-externalagent
+Allow: /
+Sitemap: https://jae-dev-portfolio.netlify.app/sitemap.xml

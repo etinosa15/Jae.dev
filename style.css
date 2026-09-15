@@ -1,4 +1,3 @@
-/* ----- RESET & ROOT VARIABLES ----- */
 *,
 *::before,
 *::after {
@@ -12,9 +11,26 @@
   --surface: #2a2d34;
   --text-primary: #eae6df;
   --text-muted: #9a958e;
-  --accent-slate: #4a5b6b;
+  --text-subtle: #b5afa6;
+  /* Was #4a5b6b, which measured 2.49:1 on --bg and failed WCAG 2.2 SC 1.4.11
+     (3:1 for non-text UI) in all three places it's used: the contact icon
+     strokes, the active/hover nav underline, and the active row rule in the
+     mobile dropdown. This measures 3.90:1 on --bg, 3.39:1 on the dropdown row
+     and 3.09:1 on --surface, so it passes in every context. Same hue, ~14%
+     lighter. */
+  --accent-slate: #647a8c;
   --accent-amber: #c49a6c;
   --border: #3a3733;
+  /* Boundary colour for interactive controls sitting on --surface.
+     --border is a hairline for decorative edges — card outlines, footer rules,
+     section dividers — and at 1.16:1 against --surface it's fine for those.
+     It is not fine on a form field, where the border IS the affordance telling
+     you where the input is. This measures 3.11:1 on --surface and 3.92:1 on
+     --bg, clearing 3:1 on both sides of the boundary.
+     Deliberately a separate token rather than lightening --border: that would
+     drag every card outline and divider up with it and turn the editorial
+     look into a wireframe. */
+  --border-strong: #7d776d;
   --font-body:
     system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-heading: Georgia, "Times New Roman", Times, serif;
@@ -31,7 +47,6 @@ body {
   color: var(--text-primary);
   font-family: var(--font-body);
   line-height: 1.6;
-  padding: 0 1.5rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -46,7 +61,6 @@ a:hover {
   color: var(--text-primary);
 }
 
-/* ----- TYPOGRAPHY ----- */
 h1,
 h2,
 h3,
@@ -78,30 +92,112 @@ p {
   margin-bottom: 1rem;
 }
 
-/* ----- LAYOUT ----- */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
-  padding: 1.5rem 0;
+  padding: 1.5rem;
 }
 
-/* ----- HEADER / NAV ----- */
+#scroll-sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
 header {
-  padding: 1.5rem 0 0.5rem 0;
-  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0.9rem 1.5rem;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -28px;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 26, 26, 0.92) 0%,
+    rgba(26, 26, 26, 0.72) 45%,
+    rgba(26, 26, 26, 0.3) 78%,
+    rgba(26, 26, 26, 0) 100%
+  );
+  z-index: -2;
+  pointer-events: none;
+}
+
+.nav-shell {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid rgba(234, 230, 223, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(234, 230, 223, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 10px 28px -10px rgba(0, 0, 0, 0.55);
+  transition:
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+header.scrolled .nav-shell {
+  border-color: rgba(234, 230, 223, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(234, 230, 223, 0.09),
+    0 3px 8px rgba(0, 0, 0, 0.4),
+    0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+
+.header-blur {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  backdrop-filter: blur(22px) saturate(155%) brightness(0.92);
+  -webkit-backdrop-filter: blur(22px) saturate(155%) brightness(0.92);
+}
+
+.header-grain {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .nav-shell {
+    background: var(--bg);
+  }
+  .header-blur {
+    display: none;
+  }
 }
 
 nav {
   display: flex;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-  align-items: baseline;
+  gap: 0;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
 .nav-logo-wrapper {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
   overflow: hidden;
   border-radius: 50%;
   display: inline-flex;
@@ -110,22 +206,29 @@ nav {
 }
 
 .nav-logo {
-  width: 65px;
-  height: 65px;
+  width: 48px;
+  height: 48px;
   object-fit: cover;
   object-position: center;
-  margin-right: 0.5rem;
 }
 
 .nav-brand {
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   color: var(--text-primary);
   margin-right: auto;
+  margin-left: 0.55rem;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 .nav-brand span {
   color: var(--accent-amber);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 nav a {
@@ -135,11 +238,53 @@ nav a {
   border-bottom: 2px solid transparent;
   transition: all var(--transition);
   cursor: pointer;
+  white-space: nowrap;
 }
 nav a:hover,
 nav a.active {
   color: var(--text-primary);
   border-bottom-color: var(--accent-slate);
+}
+
+.nav-toggle {
+  display: none;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+.nav-toggle:hover {
+  background: rgba(234, 230, 223, 0.06);
+  border-color: rgba(234, 230, 223, 0.12);
+}
+.nav-toggle span {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition:
+    transform var(--transition),
+    opacity var(--transition);
+}
+header.nav-open .nav-toggle span:nth-child(1) {
+  transform: translateY(5.5px) rotate(45deg);
+}
+header.nav-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+header.nav-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
 }
 
 #home h1 {
@@ -149,7 +294,6 @@ nav a.active {
   border-radius: 5%;
 }
 
-/* ----- PAGES (sections) ----- */
 .page {
   display: none;
   animation: fadeUp 0.5s ease forwards;
@@ -170,7 +314,6 @@ nav a.active {
   }
 }
 
-/* ----- CARDS (projects, coming soon) ----- */
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -228,10 +371,17 @@ nav a.active {
   border-color: var(--accent-amber);
 }
 
+.btn-disabled {
+  border-color: var(--border);
+  color: var(--text-subtle);
+  pointer-events: none;
+  cursor: default;
+}
+
 .coming-badge {
   display: inline-block;
   background: var(--border);
-  color: var(--text-muted);
+  color: var(--text-subtle);
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -241,7 +391,6 @@ nav a.active {
   align-self: flex-start;
 }
 
-/* ----- ABOUT (skills + exp) ----- */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -284,7 +433,6 @@ nav a.active {
   display: block;
 }
 
-/* ----- CONTACT ----- */
 .contact-links {
   display: flex;
   flex-wrap: wrap;
@@ -324,7 +472,6 @@ nav a.active {
   color: var(--accent-amber);
 }
 
-/* ----- CONTACT FORM ----- */
 .contact-form-wrapper {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
@@ -353,7 +500,10 @@ nav a.active {
 .form-group textarea {
   width: 100%;
   background: var(--surface);
-  border: 1px solid var(--border);
+  /* --border-strong, not --border: the fill cannot carry this on its own.
+     --surface on --bg is only 1.26:1, so with a hairline border an empty field
+     has no perceptible edge at all. See the token definition in :root. */
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-btn);
   padding: 0.65rem 0.9rem;
   color: var(--text-primary);
@@ -390,6 +540,22 @@ nav a.active {
   color: var(--bg);
 }
 
+/* Only reachable for the second or so a submit is in flight, but without it a
+   locked button still looks and hovers like a live one.
+   Mirrors .btn-disabled: the colour is set outright rather than through
+   opacity, which would composite the text toward the background and halve its
+   contrast. The :hover override is needed because .form-submit:hover would
+   otherwise still fill it amber under the cursor. */
+.form-submit:disabled {
+  border-color: var(--border);
+  color: var(--text-subtle);
+  cursor: not-allowed;
+}
+.form-submit:disabled:hover {
+  background: transparent;
+  color: var(--text-subtle);
+}
+
 #form-status {
   margin-top: 0.75rem;
   font-size: 0.9rem;
@@ -397,7 +563,6 @@ nav a.active {
   max-width: none;
 }
 
-/* ----- FOOTER ----- */
 footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
@@ -407,24 +572,101 @@ footer {
   font-size: 0.85rem;
 }
 
-/* ----- ACCESSIBILITY / FOCUS ----- */
 :focus-visible {
   outline: 2px solid var(--accent-amber);
   outline-offset: 2px;
 }
 
-/* ----- RESPONSIVE TWEAKS ----- */
-@media (max-width: 600px) {
-  body {
-    padding: 0 1.25rem;
+/* ----- REDUCED MOTION -----
+   Vestibular disorders make the fadeUp translate and smooth scrolling actively
+   unpleasant, not just showy. Honour the OS setting.
+
+   !important is load-bearing here, not defensive: script.js writes
+   `el.style.transition` directly onto every fade-in element, and an inline
+   declaration outranks any normal stylesheet rule. Only !important wins.
+
+   Near-zero rather than 0s so transitionend/animationend still fire — code
+   that waits on those keeps working instead of hanging. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  nav {
-    gap: 1.2rem;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 720px) {
+  header {
+    padding: 0.75rem 1rem;
+  }
+  .nav-shell {
+    padding: 0.4rem 0.5rem 0.4rem 1.1rem;
+  }
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.4rem;
+    border-radius: 18px;
+    background: rgba(26, 26, 26, 0.96);
+    border: 1px solid rgba(234, 230, 223, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(234, 230, 223, 0.07),
+      0 14px 36px -12px rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(22px) saturate(155%) brightness(0.92);
+    -webkit-backdrop-filter: blur(22px) saturate(155%) brightness(0.92);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition:
+      opacity var(--transition),
+      transform var(--transition),
+      visibility var(--transition);
+  }
+  header.nav-open .nav-links {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    padding: 0.7rem 0.9rem;
+    border-bottom: none;
+    border-radius: 12px;
+  }
+  .nav-links a:hover {
+    background: rgba(234, 230, 223, 0.06);
+  }
+  .nav-links a.active {
+    background: rgba(234, 230, 223, 0.06);
+    box-shadow: inset 2px 0 0 var(--accent-slate);
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1.25rem;
   }
   .nav-brand {
-    font-size: 1.2rem;
-    width: 100%;
-    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
   }
   .project-grid {
     grid-template-columns: 1fr;
@@ -432,5 +674,187 @@ footer {
   .contact-links {
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  header {
+    padding: 0.7rem 0.75rem;
+  }
+  .nav-logo-wrapper {
+    width: 26px;
+    height: 26px;
+  }
+  .nav-logo {
+    width: 42px;
+    height: 42px;
+  }
+  .nav-brand {
+    font-size: 1rem;
+    margin-left: 0.4rem;
+  }
+}
+
+@media print {
+  .page {
+    display: block !important;
+  }
+
+  /* The load-bearing rule. script.js writes opacity:0 and a transform INLINE
+     onto every card, skill chip, experience item and contact link before it
+     scrolls into view, and an inline declaration outranks any normal
+     stylesheet rule — so without !important here the majority of the page
+     prints blank. Verified against the real page: 16 elements still carry
+     inline opacity:0 and all 16 compute to 1. */
+  *,
+  *::before,
+  *::after {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    display: block !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  span,
+  strong,
+  em,
+  label,
+  time,
+  figcaption {
+    color: #000 !important;
+  }
+
+  /* Headings are sized with clamp() and vw units, which is right for a viewport
+     and wrong for a sheet: the vw resolves against the page box, putting h1
+     around 32pt and eating a third of the first page. Fixed point sizes
+     instead — pt is the unit paged media is actually specified in. */
+  h1 {
+    font-size: 24pt !important;
+    margin-bottom: 0.3rem !important;
+  }
+  h2 {
+    font-size: 16pt !important;
+    margin-bottom: 0.6rem !important;
+    padding-bottom: 0.2rem !important;
+    border-bottom: 1px solid #999 !important;
+  }
+  h3 {
+    font-size: 12.5pt !important;
+  }
+  h4 {
+    font-size: 11pt !important;
+  }
+  .contact-email {
+    font-size: 13pt !important;
+  }
+
+  header,
+  #scroll-sentinel {
+    display: none !important;
+  }
+
+  .contact-form-wrapper {
+    display: none !important;
+  }
+
+  main::before {
+    content: "jae-dev-portfolio.netlify.app";
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 10pt;
+    letter-spacing: 0.04em;
+    color: #000;
+    border-bottom: 1px solid #999;
+    padding-bottom: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.82em;
+    font-weight: normal;
+    text-decoration: none;
+    word-break: break-all;
+  }
+
+  .card,
+  .skill-list li,
+  .coming-badge {
+    background: #fff !important;
+    border: 1px solid #999 !important;
+    color: #000 !important;
+  }
+
+  .contact-links svg {
+    stroke: #000 !important;
+  }
+
+  #home h1 {
+    border-bottom-color: #000 !important;
+  }
+
+  footer {
+    border-top: 1px solid #999 !important;
+    color: #000 !important;
+    margin-top: 1.5rem !important;
+  }
+
+  .card,
+  .exp-item,
+  .contact-links a,
+  .skill-list {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  /* Each section after the first starts on a fresh sheet. Written as
+     .page + .page rather than .page so the first can't emit a leading blank
+     page. */
+
+  .page + .page {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .page {
+    padding: 0 0 1rem 0 !important;
+  }
+
+  @page {
+    margin: 18mm 16mm;
   }
 }
