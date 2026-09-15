@@ -15,24 +15,41 @@
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 
     # ----- Content-Security-Policy -----
-    # Left commented on purpose. A CSP is the strongest header here and also the
-    # easiest one to silently break a site with, and it CANNOT be tested against
-    # the local python http.server (which sends no custom headers at all).
+    # ACTIVE. This cannot be tested against the local python http.server, which
+    # sends no custom headers at all — the first real proof is a deploy preview.
     #
-    # Directives below are matched to what this site actually loads today:
-    #   'unsafe-inline' in style-src  -> the inline style="" attributes in
-    #                                    index.html and the <noscript><style>
-    #   data: in img-src              -> the feTurbulence grain data-URI in
-    #                                    style.css (.header-grain)
-    #   api.web3forms.com            -> the contact form's fetch() target
-    # The JSON-LD blocks need no script-src allowance: type="application/ld+json"
-    # is a data block, never executed, so CSP does not apply to it.
+    # Every directive is matched to what this site actually loads. Verified by
+    # walking the markup rather than by assumption:
+    #   script-src 'self'   -> the ONLY executable script is <script src="script.js">.
+    #                          There are zero inline event handlers (onclick= etc.)
+    #                          and zero javascript: URLs, which is what makes it
+    #                          safe to omit 'unsafe-inline' here. Adding an inline
+    #                          handler later WILL break silently — put it in
+    #                          script.js instead.
+    #                          The two JSON-LD blocks need no allowance:
+    #                          type="application/ld+json" is a data block, never
+    #                          executed, so script-src does not apply to it.
+    #   style-src 'unsafe-inline' -> 12 inline style="" attributes across
+    #                          index.html and 404.html, plus the <noscript><style>
+    #                          block. Removing those would let this tighten.
+    #   img-src data:       -> the feTurbulence grain data-URI in style.css
+    #                          (.header-grain).
+    #   connect-src         -> script.js fetches https://api.web3forms.com/submit.
+    #   form-action         -> the form has no action attribute, so a native
+    #                          submit would post to 'self'; the API host is listed
+    #                          because that is where the JS sends it.
+    #   font-src 'self'     -> no @font-face and no external fonts; the headings
+    #                          use Georgia, a system font.
+    #   frame-ancestors 'none' -> the CSP-era equivalent of the X-Frame-Options
+    #                          above, and the one modern browsers actually honour.
     #
-    # To enable: deploy to a Netlify DEPLOY PREVIEW first, uncomment, then open
-    # DevTools > Console and submit the contact form. Any CSP violation prints
-    # there naming the directive it needs. Only merge once the console is clean.
+    # Outbound <a> links (github.com, wa.me, x.com, the two project sites) need no
+    # directive: CSP does not restrict link navigation.
     #
-    # Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+    # If something breaks, DevTools > Console names the exact directive that
+    # refused the load. Comment this one line out to roll back — everything else
+    # in this file keeps working.
+    Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
 
 # ----- Caching -----
 # HTML, CSS and JS are deliberately left on Netlify's default
